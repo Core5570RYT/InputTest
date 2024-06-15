@@ -1,8 +1,8 @@
 package;
 
-import flixel.FlxG;
 import flixel.input.keyboard.FlxKey;
 import haxe.Timer;
+import openfl.media.Sound;
 import sys.thread.Thread;
 
 /**
@@ -22,7 +22,7 @@ class InputManager {
     public function new() {
         trace("Initializing Thread for Inputs...");
         lastTime = Timer.stamp();
-        Thread.create(loop);
+		Thread.createWithEventLoop(loop);
     }
 
     private function loop() {
@@ -35,6 +35,7 @@ class InputManager {
             }
 
             lastPassedMS = (Timer.stamp() - startTime) * 1000;
+			Thread.processEvents();
         }
     }
 
@@ -54,7 +55,7 @@ class InputManager {
         // wowah
         for (i in keysPressed){
             if (i) {
-                FlxG.sound.play("assets/sounds/hitsound.ogg");
+				Sound.fromFile("./assets/sounds/hitsound.ogg").play();
             }
         }
     }
